@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Game</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f2f2f2;
+}
+
+/* Styles for login container */
+#login-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	flex-direction: column;
+}
+
+#loginForm {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#loginForm h1 {
+	color: #333;
+	margin-bottom: 20px;
+}
+
+#loginForm label {
+	display: block;
+	margin-bottom: 8px;
+	color: #666;
+}
+
+#loginForm input[type="text"], #loginForm input[type="password"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-size: 16px;
+}
+
+#loginForm button[type="submit"] {
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+#loginForm button[type="submit"]:hover {
+	background-color: #0056b3;
+}
+
+/* Styles for game container */
+#game-container {
+	display: none; /* Initially hide the game container */
+	text-align: center;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+	margin: 50px;
+}
+
+.play-buttons {
+	margin-top: 20px;
+}
+
+.play-button, .history-button {
+	display: inline-block;
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	font-size: 16px;
+	margin: 0 10px;
+}
+
+.play-button {
+	background-color: #007bff;
+	color: #fff;
+}
+
+.play-button:hover {
+	background-color: #0056b3;
+}
+
+.history-button {
+	background-color: #28a745;
+	color: #fff;
+}
+
+.history-button:hover {
+	background-color: #218838;
+}
+
+.logout-button {
+	background-color: #28a745;
+	color: #fff;
+}
+
+.logout-button { /* Added .logout-button class */
+	display: inline-block;
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	font-size: 16px;
+	margin: 0 10px;
+}
+/* Styles for quiz container */
+#quiz-container {
+	display: none;
+	text-align: center;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+	margin: 50px;
+}
+
+.option-button {
+	margin: 10px;
+	padding: 10px 20px;
+	border-radius: 5px;
+	background-color: #007bff;
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	font-size: 16px;
+}
+
+.option-button:hover {
+	background-color: #0056b3;
+}
+</style>
+</head>
+<body>
+	<!-- Login container -->
+	<div id="login-container">
+		<form id="loginForm">
+			<h1>Login</h1>
+			<div>
+				<label for="username">Username:</label> <input type="text"
+					id="username" name="username" required>
+			</div>
+			<div>
+				<label for="password">Password:</label> <input type="password"
+					id="password" name="password" required>
+			</div>
+			<button type="submit">Login</button>
+		</form>
+	</div>
+
+	<!-- Game container -->
+	<div id="game-container">
+		<h1>Welcome to the Quiz Game</h1>
+		<div class="play-buttons">
+			<a href="#" class="play-button" id="play-solo-button">Play Solo</a> <a
+				href="#" class="play-button">Play with Opponent</a>
+			
+		</div>
+		<a href="history.html" class="history-button" id="history-button">History</a>
+
+	</div>
+
+	<!-- Quiz container -->
+	<div id="quiz-container">
+		<!-- Quiz question and options will be dynamically populated here -->
+	</div>
+
+	<!-- result container -->
+
+	<div id="result-container">
+		
+	</div>
+
+
+	<!-- Load the SFS2X API script -->
+	<script type="text/javascript" src="sfs2x-api-1.8.1.js"></script>
+
+	<!-- Ensure the SFS2X API script is loaded before executing scripts.js -->
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function() {
+			// Retrieve session storage data
+			var quizData = JSON.parse(sessionStorage.getItem("quizData"));
+
+			// Check if quizData exists and update UI if necessary
+			if (quizData) {
+				// Do something with the quizData if needed
+				console.log("Retrieved quiz data from session storage:",
+						quizData);
+			}
+
+			// Add event listener to the history button
+			document.getElementById("history-button").addEventListener(
+					"click",
+					function(event) {
+						event.preventDefault(); // Prevent the default behavior of the anchor tag
+						var quizData = sessionStorage.getItem("quizData");
+						if (quizData) {
+							var encodedData = encodeURIComponent(quizData);
+							window.location.href = "history.html?data="
+									+ encodedData;
+						} else {
+							alert("No quiz data available.");
+						}
+					});
+
+			// Check if SFS2X is defined before executing scripts.js
+			if (typeof SFS2X === 'undefined') {
+				console.error('SFS2X API script not loaded');
+			}
+
+			// Load scripts.js after SFS2X is loaded
+			if (typeof SFS2X !== 'undefined') {
+				var scriptsJS = document.createElement('script');
+				scriptsJS.src = 'scripts.js';
+				scriptsJS.type = 'text/javascript';
+				document.head.appendChild(scriptsJS);
+			} else {
+				console.error('SFS2X API script not loaded');
+			}
+		});
+	</script>
+</body>
+</html>

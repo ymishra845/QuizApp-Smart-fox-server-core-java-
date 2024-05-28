@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+        }
+        .container h1 {
+            margin: 0 0 20px;
+            color: #333;
+        }
+        .container p {
+            font-size: 1.5em;
+            color: #666;
+        }
+        .replay-button, .leave-room {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #6a11cb;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .replay-button:hover, .leave-room:hover {
+            background-color: #2575fc;
+        }
+        #quiz-container {
+            margin-top: 20px;
+        }
+        .option-button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #6a11cb;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .option-button:hover {
+            background-color: #2575fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="quiz-title">Great!!! you have attempted all the quiz here are your marks</h1>
+        <h2>See you soon !!!</h2>
+        <div id="quiz-container"></div>
+        <p id="marks"></p>
+        <p id="wrong-answers"></p>
+        <button id="replay-button" class="replay-button">Replay</button>
+        <button id="leave-room" class="leave-room">Leave Room</button>
+    </div>
+    <script src="https://www.smartfoxserver.com/client-api/sfs2x-api.js"></script>
+    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Retrieve marks and wrong answers from session storage
+            var marks = sessionStorage.getItem("quizMarks");
+            var wrongAnswers = sessionStorage.getItem("wrongAnswers");
+
+            // Display marks
+            var marksElement = document.getElementById('marks');
+            if (marks) {
+                marksElement.textContent = 'Marks: ' + marks;
+                // Clear the marks from session storage after displaying
+                sessionStorage.removeItem("quizMarks");
+            } else {
+                marksElement.textContent = 'No marks available.';
+            }
+
+            // Display wrong answers
+            var wrongAnswersElement = document.getElementById('wrong-answers');
+            if (wrongAnswers) {
+                wrongAnswersElement.textContent = 'Wrong Answers: ' + wrongAnswers;
+                // Clear the wrong answers from session storage after displaying
+                sessionStorage.removeItem("wrongAnswers");
+            } else {
+                wrongAnswersElement.textContent = 'No wrong answers available.';
+            }
+
+            document.getElementById('replay-button').addEventListener('click', function() {
+                resetQuiz();
+            });
+        });
+    </script>
+</body>
+</html>

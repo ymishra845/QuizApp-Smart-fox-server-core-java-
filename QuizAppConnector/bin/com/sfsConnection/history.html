@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz History</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Quiz ID</th>
+                    <th>Quiz Name</th>
+                    <th>Score</th>
+                    <th>Date Time</th>
+                </tr>
+            </thead>
+            <tbody id="quiz-history-body">
+                <!-- Quiz history will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var quizData = urlParams.get('data');
+            
+            if (quizData) {
+                var quizDataArray = JSON.parse(decodeURIComponent(quizData));
+                var tableBody = document.getElementById('quiz-history-body');
+
+                quizDataArray.forEach(function(record) {
+                    var row = document.createElement('tr');
+
+                    var quizIdCell = document.createElement('td');
+                    quizIdCell.textContent = record.quizId;
+                    row.appendChild(quizIdCell);
+
+                    var quizNameCell = document.createElement('td');
+                    quizNameCell.textContent = record.quizName;
+                    row.appendChild(quizNameCell);
+
+                    var scoreCell = document.createElement('td');
+                    scoreCell.textContent = record.score;
+                    row.appendChild(scoreCell);
+
+                    var dateTimeCell = document.createElement('td');
+                    var date = new Date(record.Date_time);
+                    var formattedDate = date.toLocaleString(); // Formats the date to a readable string
+                    dateTimeCell.textContent = formattedDate;
+                    row.appendChild(dateTimeCell);
+
+                    tableBody.appendChild(row);
+                });
+            } else {
+                alert("No quiz data available.");
+            }
+        });
+    </script>
+</body>
+</html>

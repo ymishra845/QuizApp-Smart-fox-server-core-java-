@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border-top: none;
+        }
+
+        #Username {display: block;}
+        #Password {display: none;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Registration</h1>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Username')" id="defaultOpen">Username</button>
+        <button class="tablinks" onclick="openTab(event, 'Password')">Password</button>
+    </div>
+
+    <div id="Username" class="tabcontent">
+        <h2>Enter Username</h2>
+        <form id="usernameForm">
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <button type="button" onclick="nextTab()">Next</button>
+        </form>
+    </div>
+
+    <div id="Password" class="tabcontent">
+        <h2>Enter Password</h2>
+        <form id="passwordForm">
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    function nextTab() {
+        document.getElementById("Password").style.display = "block";
+        document.getElementById("Username").style.display = "none";
+        document.getElementById("defaultOpen").classList.remove("active");
+        document.getElementsByClassName("tablinks")[1].classList.add("active");
+    }
+
+    function submitForm() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        // Call function from scripts.js to handle submission and connection to Smart Fox Server
+        handleFormSubmission(username, password);
+    }
+
+    document.getElementById("defaultOpen").click();
+</script>
+
+<!-- Load the SFS2X API script -->
+<script type="text/javascript" src="sfs2x-api-1.8.1.js"></script>
+
+<!-- Load scripts.js -->
+<script type="text/javascript" src="scripts.js"></script>
+
+</body>
+</html>
